@@ -12,7 +12,7 @@ user = require('./routes/user');
 
 var app = express();
 
-mongoose.connect("mongodb://miraathdemo:controlpaneldemo@ds141368.mlab.com:41368/miraath-panel");
+mongoose.connect(dbconfig.uri);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

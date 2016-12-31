@@ -32,3 +32,39 @@ exports.create = function(user, done){
 
 };
 
+exports.update = function(user, done){
+
+	function updateUser(user, done){
+		User.findOneAndUpdate({_id : user._id}, user, function(err, doc){
+			if(err)
+				return done(err)
+			done(null);
+		});	
+	}
+
+	if(user.email){
+		User.findOne({email : user.email}, function (err, doc) {
+			if(err)
+				return done(err);
+
+			if(doc._id == user._id)	
+				return updateUser(user, done);
+
+			if(doc){
+				err = {
+					type : "email",
+					msg : ".هذا البريد الإلكتروني يستخدمه حاليا عضو آخر، المرجو تغييره"
+				};
+				return done(err);
+			}
+			
+		});
+	}
+	else{
+		updateUser(user, done);
+	}
+
+};
+
+
+
