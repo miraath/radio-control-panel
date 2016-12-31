@@ -66,5 +66,43 @@ exports.update = function(user, done){
 
 };
 
+exports.login =  function (email, password, done) {
+	
+	User.findOne({email : email.toLowerCase()}, function(err, user) {
+
+		if(err)
+			return done(err);
+
+		if(!user){
+			err = {
+				type : "input",
+				msg : ".عنوان البريد الإلكتروني أو كلمة السر لا تطابق أي حساب"
+			};
+			return done(err);
+		}
+
+		bcrypt.compare(password, user.hashed_password, function(err, res) {
+
+		    if(err){
+		    	err = "ServerError: While comparing password";
+		    	return done(err);
+		    }
+
+		    if(!res){
+		    	err = {
+					type : "input",
+					msg : ".عنوان البريد الإلكتروني أو كلمة السر لا تطابق أي حساب"
+				};
+				return done(err);
+		    }
+
+		    user.hashed_password = undefined;
+
+		    return done(null, user);
+		});
+
+
+	});
+};
 
 
