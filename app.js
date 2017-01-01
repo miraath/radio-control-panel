@@ -5,9 +5,12 @@ logger = require('morgan'),
 cookieParser = require('cookie-parser'),
 bodyParser = require('body-parser'),
 mongoose = require("mongoose"),
-dbconfig = require("./config/db"),
-index = require('./routes/index'),
-user = require('./routes/user');
+dbconfig = require("./config/db");
+
+// Routes
+var index = require('./routes/index'),
+user = require('./routes/user'),
+channel = require('./routes/channel');
 
 
 var app = express();
@@ -28,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/user', user);
+app.use('/channel', channel);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
